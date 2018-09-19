@@ -51,8 +51,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-.vscode
-
 # General
 .DS_Store
 .AppleDouble
@@ -80,3 +78,10 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
