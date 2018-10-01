@@ -11,13 +11,13 @@ export class App extends Component {
       container: this.graphRef.current,
       elements: [
         {
-          data: { id: 'a' }
+          data: { id: 'team1' }
         },
         {
-          data: { id: 'b' }
+          data: { id: 'team2' }
         },
         {
-          data: { id: 'ab', source: 'a', target: 'b' }
+          data: { id: 'ab', value: [3, 2], source: 'team1', target: 'team2' }
         }
       ],
       style: [
@@ -34,6 +34,7 @@ export class App extends Component {
           selector: 'edge',
           style: {
             width: 3,
+            label: 'data(value)',
             'line-color': '#ccc',
             'target-arrow-color': '#ccc',
             'target-arrow-shape': 'triangle'
