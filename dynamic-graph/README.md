@@ -13,6 +13,10 @@
   npm install
 ```
 
+## Color palette
+
+- https://color.adobe.com/ko/Kopie-von-Neutral-Blue-color-theme-11276313/?showPublished=true
+
 ## License
 
 UNLICENSED

@@ -19,6 +19,7 @@ html {
 
 body {
   align-items: center;
+  background-color: #d1dbbd;
   display: flex;
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 1rem;

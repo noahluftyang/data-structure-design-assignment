@@ -3,6 +3,8 @@ import './index.css';
 import cytoscape from 'cytoscape';
 import React, { Component, createRef } from 'react';
 
+import { Nav } from './Nav';
+
 export class App extends Component {
   componentDidMount() {
     this.graph = cytoscape({
@@ -50,6 +52,11 @@ export class App extends Component {
   graphRef = createRef();
 
   render() {
-    return <div ref={this.graphRef} />;
+    return (
+      <>
+        <Nav />
+        <div ref={this.graphRef} style={{ height: '90vh' }} />
+      </>
+    );
   }
 }
