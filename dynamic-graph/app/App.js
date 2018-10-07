@@ -4,22 +4,44 @@ import cytoscape from 'cytoscape';
 import React, { Component, createRef } from 'react';
 
 import { Nav } from './Nav';
+import { getJson } from './utils';
 
 export class App extends Component {
-  componentDidMount() {
+  state = {
+    year: 2018,
+    data: []
+  };
+
+  async componentDidMount() {
+    try {
+      const { data } = await getJson({
+        url: `/matches/${this.state.year}`
+      });
+
+      this.setState(state => ({
+        ...state,
+        data
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+
+    this.renderGraph();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.data !== prevState.data) {
+      this.renderGraph();
+    }
+  }
+
+  graph = null;
+  graphRef = createRef();
+
+  renderGraph = () => {
     this.graph = cytoscape({
       container: this.graphRef.current,
-      elements: [
-        {
-          data: { id: 'team1' }
-        },
-        {
-          data: { id: 'team2' }
-        },
-        {
-          data: { id: 'ab', value: [3, 2], source: 'team1', target: 'team2' }
-        }
-      ],
+      elements: this.state.data,
       style: [
         // the stylesheet for the graph
         {
@@ -47,10 +69,7 @@ export class App extends Component {
         rows: 1
       }
     });
-  }
-
-  graph = null;
-  graphRef = createRef();
+  };
 
   render() {
     return (

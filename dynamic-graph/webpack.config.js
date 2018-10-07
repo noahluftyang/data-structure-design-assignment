@@ -1,3 +1,4 @@
+const DotenvPlugin = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { HotModuleReplacementPlugin } = require('webpack');
 
@@ -21,6 +22,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new DotenvPlugin({
+      systemvars: true
+    }),
     new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html'

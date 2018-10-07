@@ -10,7 +10,18 @@
 ## Installation
 
 ```sh
+  pip install -r requirements.txt
   npm install
+```
+
+## Development
+
+```sh
+  # run api server
+  FLASK_DEBUG=1 python wsgi.py
+
+  # run client app
+  npm run develop
 ```
 
 ## Color palette
