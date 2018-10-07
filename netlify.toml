@@ -1,0 +1,3 @@
+[build]
+base="dynamic-graph/"
+publish="dynamic-graph/dist/"
