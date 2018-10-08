@@ -63,10 +63,8 @@ export class App extends Component {
           }
         }
       ],
-
       layout: {
-        name: 'grid',
-        rows: 1
+        name: 'circle'
       }
     });
   };
