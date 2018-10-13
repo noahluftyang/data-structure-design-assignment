@@ -1,3 +1,5 @@
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import './index.css';
 
 import { Router } from '@reach/router';
@@ -25,7 +27,7 @@ export class App extends Component {
 
   // render
   render() {
-    const { year } = this.state;
+    const { year, league, season } = this.state;
 
     return (
       <>

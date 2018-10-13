@@ -1,4 +1,5 @@
 import cytoscape from 'cytoscape';
+import coseBilkent from 'cytoscape-cose-bilkent';
 import React, { createRef, PureComponent } from 'react';
 
 import { getJson } from './utils';
@@ -9,6 +10,7 @@ export class YearGraph extends PureComponent {
   };
 
   componentDidMount() {
+    cytoscape.use(coseBilkent);
     this.fetchYearGraphData();
   }
 
@@ -50,7 +52,6 @@ export class YearGraph extends PureComponent {
       container: this.graphRef.current,
       elements: this.state.data,
       style: [
-        // the stylesheet for the graph
         {
           selector: 'node',
           style: {
@@ -58,20 +59,17 @@ export class YearGraph extends PureComponent {
             label: 'data(id)'
           }
         },
-
         {
           selector: 'edge',
           style: {
-            width: 3,
-            label: 'data(value)',
-            'line-color': '#ccc',
-            'target-arrow-color': '#ccc',
-            'target-arrow-shape': 'triangle'
+            label: 'data(value)'
           }
         }
       ],
       layout: {
-        name: 'cose'
+        name: 'cose-bilkent',
+        idealEdgeLength: 100,
+        randomize: true
       }
     });
   };

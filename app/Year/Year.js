@@ -1,4 +1,4 @@
-import React, { cloneElement, PureComponent, Children } from 'react';
+import React, { PureComponent } from 'react';
 import Slider from 'react-slick';
 
 import { Dropdown } from '../Dropdown';
@@ -46,7 +46,7 @@ export default class Year extends PureComponent {
             onChange={handleYear}
           />
         </div>
-        <Slider>{children}</Slider>
+        <Slider dots>{children}</Slider>
       </>
     );
   }
