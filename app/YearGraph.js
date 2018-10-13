@@ -1,21 +1,38 @@
-import './index.css';
-
 import cytoscape from 'cytoscape';
-import React, { Component, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 
-import { Nav } from './Nav';
 import { getJson } from './utils';
 
-export class App extends Component {
+export class YearGraph extends PureComponent {
   state = {
-    year: 2018,
     data: []
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.fetchYearGraphData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.year !== prevProps.year) {
+      this.fetchYearGraphData();
+    }
+
+    if (this.state.data !== prevState.data) {
+      this.renderGraph();
+    }
+  }
+
+  componentWillUnmount() {
+    this.graph.destroy();
+  }
+
+  graph = null;
+  graphRef = createRef();
+
+  fetchYearGraphData = async () => {
     try {
       const { data } = await getJson({
-        url: `/matches/${this.state.year}`
+        url: `/matches/${this.props.year}`
       });
 
       this.setState(state => ({
@@ -25,19 +42,9 @@ export class App extends Component {
     } catch (err) {
       console.error(err);
     }
+  };
 
-    this.renderGraph();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.data !== prevState.data) {
-      this.renderGraph();
-    }
-  }
-
-  graph = null;
-  graphRef = createRef();
-
+  // render
   renderGraph = () => {
     this.graph = cytoscape({
       container: this.graphRef.current,
@@ -64,17 +71,12 @@ export class App extends Component {
         }
       ],
       layout: {
-        name: 'circle'
+        name: 'cose'
       }
     });
   };
 
   render() {
-    return (
-      <>
-        <Nav />
-        <div ref={this.graphRef} style={{ height: '90vh' }} />
-      </>
-    );
+    return <div ref={this.graphRef} style={{ height: '90vh' }} />;
   }
 }
