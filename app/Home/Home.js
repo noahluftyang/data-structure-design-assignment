@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import Slider from 'react-slick';
 
+import { FilterWrapper } from './styles';
 import { Dropdown } from '../Dropdown';
 
 const yearOption = [
@@ -31,22 +31,41 @@ const leagueOption = [
 
 const seasonOption = [{ label: 'Spring', value: 'Spring' }, { label: 'Summer', value: 'Summer' }];
 
-export default class Year extends PureComponent {
+export class Home extends PureComponent {
   render() {
-    const { children, year, handleYear } = this.props;
+    const { children, league, season, year, handleDropdown } = this.props;
 
     return (
       <>
-        <div>
+        <FilterWrapper>
           <Dropdown
             name="year"
             options={yearOption}
             title="YEAR"
             value={year}
-            onChange={handleYear}
+            onChange={handleDropdown}
+            width="10rem"
           />
-        </div>
-        <Slider dots>{children}</Slider>
+          <Dropdown
+            clearable
+            name="league"
+            options={leagueOption}
+            title="LEAGUE"
+            value={league}
+            onChange={handleDropdown}
+            width="10rem"
+          />
+          <Dropdown
+            clearable
+            name="season"
+            options={seasonOption}
+            title="SEASON"
+            value={season}
+            onChange={handleDropdown}
+            width="10rem"
+          />
+        </FilterWrapper>
+        {children}
       </>
     );
   }

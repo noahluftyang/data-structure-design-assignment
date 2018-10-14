@@ -25,6 +25,7 @@ def create_app():
         select_df = df[['Year', 'blueTeamTag',
                         'bResult', 'rResult', 'redTeamTag']]
 
+        # parse data into graph
         for [index, data] in select_df.iterrows():
             # select row that matches target year
             check_year = data[0] == year
@@ -32,44 +33,84 @@ def create_app():
             check_red_node_exist = includes_node(nodes, data[4])
             check_edge_exist = includes_edge(edges, data[1], data[4])
 
-            if (check_year):
+            if (check_year and type(data[1]) is str and type(data[4]) is str):
                 if (check_blue_node_exist == False):
                     node = {
                         'data': {
-                            'id': data[1]
+                            'id': data[1],
+                            'win': data[2]
                         }
                     }
                     nodes.append(node)
+                else:
+                    target_node = nodes[check_blue_node_exist]['data']
+                    target_node.update(win=target_node['win'] + data[2])
 
                 if (check_red_node_exist == False):
                     node = {
                         'data': {
-                            'id': data[4]
+                            'id': data[4],
+                            'win': data[3]
                         }
                     }
                     nodes.append(node)
+                else:
+                    target_node = nodes[check_red_node_exist]['data']
+                    target_node.update(win=target_node['win'] + data[3])
 
                 # edge does not exist
                 if (check_edge_exist == False):
-                    edge = {
+                    first_edge = {
                         'data': {
                             'id': data[1] + ' vs ' + data[4],
-                            'value': [data[2], data[3]],
+                            'value': data[2],
                             'source': data[1],
                             'target': data[4]
                         }
                     }
-                    edges.append(edge)
+                    second_edge = {
+                        'data': {
+                            'id': data[4] + ' vs ' + data[1],
+                            'value': data[3],
+                            'source': data[4],
+                            'target': data[1]
+                        }
+                    }
+                    edges.append(first_edge)
+                    edges.append(second_edge)
                 # edge already exist
                 else:
-                    target_edge = edges[check_edge_exist['index']]['data']
+                    first_edge = edges[check_edge_exist]['data']
+                    first_edge.update(value=first_edge['value'] + data[2])
 
-                    if (check_edge_exist['reverse'] == True):
-                        target_edge.update(
-                            value=[target_edge['value'][0] + data[3], target_edge['value'][1] + data[2]])
+                    if (len(edges) != check_edge_exist + 1):
+                        if (edges[check_edge_exist + 1]['data']['id'] == data[4] + ' vs ' + data[1]):
+                            second_edge = edges[check_edge_exist + 1]['data']
+                            second_edge.update(
+                                value=second_edge['value'] + data[3])
+                        else:
+                            second_edge = edges[check_edge_exist - 1]['data']
+                            second_edge.update(
+                                value=second_edge['value'] + data[3])
                     else:
-                        target_edge.update(
-                            value=[target_edge['value'][0] + data[2], target_edge['value'][1] + data[3]])
+                        second_edge = edges[check_edge_exist - 1]['data']
+                        second_edge.update(
+                            value=second_edge['value'] + data[3])
+
+        # check warmonger
+        warmonger = nodes[0]['data']['id']
+        winning_count = nodes[0]['data']['win']
+
+        for data in nodes:
+            if (data['data']['win'] == 0):
+                data['data'].update(pacifist=True)
+
+            if (data['data']['win'] > winning_count):
+                warmonger = data['data']['id']
+                winning_count = data['data']['win']
+
+        warmonger_node_index = includes_node(nodes, warmonger)
+        nodes[warmonger_node_index]['data'].update(warmonger=True)
 
         # concat nodes and edges
         result.extend(nodes)

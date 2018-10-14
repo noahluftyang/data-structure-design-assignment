@@ -2,9 +2,10 @@ import cytoscape from 'cytoscape';
 import coseBilkent from 'cytoscape-cose-bilkent';
 import React, { createRef, PureComponent } from 'react';
 
-import { getJson } from './utils';
+import { StyledGraph } from './styles';
+import { getJson } from '../utils';
 
-export class YearGraph extends PureComponent {
+export default class Graph extends PureComponent {
   state = {
     data: []
   };
@@ -56,13 +57,29 @@ export class YearGraph extends PureComponent {
           selector: 'node',
           style: {
             'background-color': '#666',
-            label: 'data(id)'
+            content: 'data(id)'
+          }
+        },
+        {
+          selector: 'node[?warmonger]',
+          style: {
+            'background-color': '#b9121b',
+            content: 'data(id)'
+          }
+        },
+        {
+          selector: 'node[?pacifist]',
+          style: {
+            'background-color': '#70b85d',
+            content: 'data(id)'
           }
         },
         {
           selector: 'edge',
           style: {
-            label: 'data(value)'
+            label: 'data(value)',
+            'curve-style': 'bezier',
+            'target-arrow-shape': 'triangle'
           }
         }
       ],
@@ -75,6 +92,6 @@ export class YearGraph extends PureComponent {
   };
 
   render() {
-    return <div ref={this.graphRef} style={{ height: '90vh' }} />;
+    return <StyledGraph innerRef={this.graphRef} />;
   }
 }

@@ -6,22 +6,22 @@ import { Router } from '@reach/router';
 import React, { Component } from 'react';
 
 import { Nav } from './Nav';
-import { AsyncYear } from './Year';
-import { YearGraph } from './YearGraph';
-import { YearStats } from './YearStats';
+import { Home } from './Home';
+import { AsyncGraph } from './Graph';
+import { AsyncStats } from './Stats';
 
 export class App extends Component {
   state = {
     year: 2018,
-    league: 'NALCS',
-    season: 'Spring'
+    league: null,
+    season: null
   };
 
   // handler
-  handleYear = (e, f, g) => {
+  handleDropdown = (value, name) => {
     this.setState(state => ({
       ...state,
-      year: e.value
+      [name]: value
     }));
   };
 
@@ -33,18 +33,15 @@ export class App extends Component {
       <>
         <Nav />
         <Router>
-          <AsyncYear path="/" year={year} handleYear={this.handleYear}>
-            <YearGraph path="/" year={year} />
-            <YearStats path="stats" year={year} />
-          </AsyncYear>
-          {/* <AsyncLeague path="league">
-            <LeagueGraph path="/" />
-            <LeagueStats path="stats" />
-          </AsyncLeague>
-          <AsyncSeason path="season">
-            <SeasonGraph path="/" />
-            <SeasonStats path="stats" />
-          </AsyncSeason> */}
+          <Home
+            path="/"
+            league={league}
+            season={season}
+            year={year}
+            handleDropdown={this.handleDropdown}>
+            <AsyncGraph path="/" league={league} season={season} year={year} />
+            <AsyncStats path="stats" year={year} />
+          </Home>
         </Router>
       </>
     );
