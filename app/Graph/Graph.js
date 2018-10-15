@@ -79,7 +79,8 @@ export default class Graph extends PureComponent {
           style: {
             label: 'data(value)',
             'curve-style': 'bezier',
-            'target-arrow-shape': 'triangle'
+            'target-arrow-shape': 'triangle',
+            width: 1
           }
         }
       ],
